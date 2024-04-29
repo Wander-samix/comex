@@ -41,18 +41,26 @@ public class CadastraCliente {
                 logger.info("Informações do cliente antes da persistência: {}", cliente);
                 logger.info("Informações do endereço antes da persistência: {}", endereco);
 
-                EntityManager em = factory.createEntityManager();
                 entityManager.getTransaction().begin(); // Inicia a transação
-                cliente.salvar(em); // Persiste o cliente e seu endereço
-                entityManager.getTransaction().commit(); // Faz o commit da transação
-                entityManager.close(); // Fecha o EntityManager após o uso
-
+                // Persiste o Endereco antes do Cliente
+                entityManager.persist(endereco); // Persiste o endereço
+                // Associa o Endereco persistido ao Cliente
+                cliente.setEndereco(endereco);
+                // Agora persiste o Cliente
+                entityManager.persist(cliente); // Persiste o cliente
+                entityManager.getTransaction().commit(); // Finaliza a transação
                 logger.info("Cliente cadastrado com sucesso: {}", cliente);
             } else {
                 logger.error("Falha ao criar dados do cliente. Cliente retornou nulo.");
             }
+        } catch (Exception e) {
+            logger.error("Ocorreu uma exceção: ", e);
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback(); // Desfaz a transação em caso de exceção
+            }
         } finally {
             scanner.close();
+            entityManager.close(); // Fecha o EntityManager após o uso
             factory.close();
             setLoggingLevel(Level.DEBUG); // Restaura o nível de log após a interação
         }
