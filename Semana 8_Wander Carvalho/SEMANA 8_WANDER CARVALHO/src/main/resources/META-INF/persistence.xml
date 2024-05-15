@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+
+    <persistence-unit name="oracle"
+                      transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <properties>
+            <!-- Configuração do driver do Oracle -->
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+
+            <!-- URL de conexão com o Oracle. Ajuste conforme necessário. -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+
+            <!-- Usuário e senha para conexão com o Oracle -->
+            <property name="javax.persistence.jdbc.user" value="system"/>
+            <property name="javax.persistence.jdbc.password" value="12345678"/>
+
+            <!-- Dialeto do Hibernate para Oracle 21c (usando Oracle12cDialect como o mais próximo disponível) -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
+
+            <!-- Exibir as SQLs geradas pelo Hibernate no console -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+
+            <!-- Estratégia de atualização do esquema do banco de dados -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+            <property name="org.hibernate.SQL" value="INFO"/>
+            <property name="org.hibernate.type.descriptor.sql.BasicBinder" value="TRACE"/>
+        </properties>
+    </persistence-unit>
+</persistence>
+
+
+
